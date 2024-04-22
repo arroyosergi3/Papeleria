@@ -299,10 +299,29 @@ public class GestionArticulo extends JPanel {
 		gbc_jcbProveedor.gridx = 1;
 		gbc_jcbProveedor.gridy = 8;
 		add(jcbProveedor, gbc_jcbProveedor);
+		
+		JButton btnGestionProveedor = new JButton("Gestión Proveedor");
+		btnGestionProveedor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gestionProveedor();
+			}
+		});
+		GridBagConstraints gbc_btnGestionProveedor = new GridBagConstraints();
+		gbc_btnGestionProveedor.insets = new Insets(0, 0, 0, 5);
+		gbc_btnGestionProveedor.gridx = 8;
+		gbc_btnGestionProveedor.gridy = 8;
+		add(btnGestionProveedor, gbc_btnGestionProveedor);
 		cargarPrimero();
 		cargarPProveedores();
 
 	}
+	
+	private void gestionProveedor() {
+		GestionProveedor gp = new GestionProveedor();
+	}
+	
+	
+	
 	
 	public  boolean esPrecioFloat() {
 	    try {
