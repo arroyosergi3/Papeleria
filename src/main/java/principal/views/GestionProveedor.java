@@ -7,15 +7,29 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import principal.controllers.ControladorProveedores;
+import principal.entities.Proveedor;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Insets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class GestionProveedor extends JDialog {
 
@@ -23,18 +37,23 @@ public class GestionProveedor extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField jtfId;
 	private JTextField jtfCif;
-	private JTextField jtfNacionalidad;
 	private JTextField jtfFechaAlta;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	JCheckBox chkbxActivo;
+	JRadioButton rdbtnExento;
+	JRadioButton rdbtn10;
+	JRadioButton rdbtn4;
+	JRadioButton rdbtn21;
+	private JComboBox jcbNacionalidad;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			GestionProveedor dialog = new GestionProveedor();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
+//			GestionProveedor dialog = new GestionProveedor(p);
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,7 +62,7 @@ public class GestionProveedor extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public GestionProveedor() {
+	public GestionProveedor(Proveedor p) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -56,6 +75,11 @@ public class GestionProveedor extends JDialog {
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JButton btnNewButton = new JButton("Guardar");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					guardar();
+				}
+			});
 			btnNewButton.setIcon(new ImageIcon(GestionProveedor.class.getResource("/tutorialJava/capitulo9_AWT_SWING/res/guardar.png")));
 			GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 			gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
@@ -120,14 +144,13 @@ public class GestionProveedor extends JDialog {
 			contentPanel.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		}
 		{
-			jtfNacionalidad = new JTextField();
-			GridBagConstraints gbc_jtfNacionalidad = new GridBagConstraints();
-			gbc_jtfNacionalidad.insets = new Insets(0, 0, 5, 5);
-			gbc_jtfNacionalidad.fill = GridBagConstraints.HORIZONTAL;
-			gbc_jtfNacionalidad.gridx = 1;
-			gbc_jtfNacionalidad.gridy = 4;
-			contentPanel.add(jtfNacionalidad, gbc_jtfNacionalidad);
-			jtfNacionalidad.setColumns(10);
+			jcbNacionalidad = new JComboBox();
+			GridBagConstraints gbc_jcbNacionalidad = new GridBagConstraints();
+			gbc_jcbNacionalidad.insets = new Insets(0, 0, 5, 5);
+			gbc_jcbNacionalidad.fill = GridBagConstraints.HORIZONTAL;
+			gbc_jcbNacionalidad.gridx = 1;
+			gbc_jcbNacionalidad.gridy = 4;
+			contentPanel.add(jcbNacionalidad, gbc_jcbNacionalidad);
 		}
 		{
 			JLabel lblNewLabel_4 = new JLabel("Activo:");
@@ -138,7 +161,7 @@ public class GestionProveedor extends JDialog {
 			contentPanel.add(lblNewLabel_4, gbc_lblNewLabel_4);
 		}
 		{
-			JCheckBox chkbxActivo = new JCheckBox("");
+			 chkbxActivo = new JCheckBox("");
 			GridBagConstraints gbc_chkbxActivo = new GridBagConstraints();
 			gbc_chkbxActivo.insets = new Insets(0, 0, 5, 5);
 			gbc_chkbxActivo.gridx = 1;
@@ -173,7 +196,7 @@ public class GestionProveedor extends JDialog {
 			contentPanel.add(lblNewLabel_6, gbc_lblNewLabel_6);
 		}
 		{
-			JRadioButton rdbtnExento = new JRadioButton("Exento");
+			 rdbtnExento = new JRadioButton("Exento");
 			buttonGroup.add(rdbtnExento);
 			GridBagConstraints gbc_rdbtnExento = new GridBagConstraints();
 			gbc_rdbtnExento.insets = new Insets(0, 0, 5, 5);
@@ -182,7 +205,7 @@ public class GestionProveedor extends JDialog {
 			contentPanel.add(rdbtnExento, gbc_rdbtnExento);
 		}
 		{
-			JRadioButton rdbtn10 = new JRadioButton("10%");
+			 rdbtn10 = new JRadioButton("10%");
 			buttonGroup.add(rdbtn10);
 			GridBagConstraints gbc_rdbtn10 = new GridBagConstraints();
 			gbc_rdbtn10.insets = new Insets(0, 0, 5, 0);
@@ -191,7 +214,7 @@ public class GestionProveedor extends JDialog {
 			contentPanel.add(rdbtn10, gbc_rdbtn10);
 		}
 		{
-			JRadioButton rdbtn4 = new JRadioButton("4%");
+			 rdbtn4 = new JRadioButton("4%");
 			buttonGroup.add(rdbtn4);
 			GridBagConstraints gbc_rdbtn4 = new GridBagConstraints();
 			gbc_rdbtn4.insets = new Insets(0, 0, 0, 5);
@@ -200,7 +223,7 @@ public class GestionProveedor extends JDialog {
 			contentPanel.add(rdbtn4, gbc_rdbtn4);
 		}
 		{
-			JRadioButton rdbtn21 = new JRadioButton("21%");
+			 rdbtn21 = new JRadioButton("21%");
 			buttonGroup.add(rdbtn21);
 			GridBagConstraints gbc_rdbtn21 = new GridBagConstraints();
 			gbc_rdbtn21.gridx = 2;
@@ -223,6 +246,120 @@ public class GestionProveedor extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		cargarDatos(p);
+		cargarNacionalidades();
 	}
+	
+	public static String dateToString(Date fecha) {
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    return sdf.format(fecha);
+	}
+	
+
+	private void cargarDatos(Proveedor p) {
+		this.jtfId.setText(String.valueOf(p.getId()));
+		this.jtfCif.setText(p.getCif());
+		this.jtfFechaAlta.setText(dateToString(p.getFechaAlta()));
+		if (p.isActivo()) {
+			this.chkbxActivo.setSelected(true);
+		}
+		else {
+			this.chkbxActivo.setSelected(false);
+		}
+		
+		if (p.getIva() == 0) {
+			this.rdbtnExento.setSelected(true);
+		}
+		if (p.getIva() == 4) {
+			this.rdbtn4.setSelected(true);
+		}
+		if (p.getIva() == 10 ) {
+			this.rdbtn10.setSelected(true);
+		}
+		if (p.getIva() == 21) {
+			this.rdbtn21.setSelected(true);
+		}
+		
+		for (int i = 0; i < this.jcbNacionalidad.getItemCount(); i++) {
+			if (p.getNacionalidad() == String.valueOf(this.jcbNacionalidad.getItemAt(i)))  {
+				this.jcbNacionalidad.setSelectedIndex(i);
+				
+			}
+		}
+	
+		
+	}
+	
+	public static boolean tieneFormatoFecha(String texto) {
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    sdf.setLenient(false); // Esto hace que la validación sea estricta
+
+	    try {
+	        Date fecha = sdf.parse(texto);
+	        return true; // Si la cadena se puede parsear como fecha, entonces tiene el formato correcto
+	    } catch (ParseException e) {
+	        return false; // Si hay una excepción al parsear, significa que no tiene el formato correcto
+	    }
+	}
+	
+	public static Date deStringADate(String texto) {
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	 
+	    try {
+	        Date fecha = sdf.parse(texto);
+	        return fecha; // Si la cadena se puede parsear como fecha, entonces tiene el formato correcto
+	    } catch (ParseException e) {
+	    	JOptionPane.showMessageDialog(null, "Error, la fecha no tiene un formato valido");
+	        return null; // Si hay una excepción al parsear, significa que no tiene el formato correcto
+	    }
+	}
+	
+	
+	private void cargarNacionalidades() {
+
+		this.jcbNacionalidad.addItem("España");
+		this.jcbNacionalidad.addItem("Extranjero");
+	}
+	
+	private void guardar() {
+		
+		Proveedor p = ControladorProveedores.findArtById(Integer.parseInt(this.jtfId.getText()));
+		
+		if (tieneFormatoFecha(this.jtfFechaAlta.getText())) {
+			if (this.chkbxActivo.isSelected()) {
+				p.setActivo(true);
+			}
+			else {
+				p.setActivo(false);
+			}
+			p.setCif(this.jtfCif.getText());
+			if (rdbtn10.isSelected()) {
+				p.setIva(10);
+			}
+			if (rdbtn4.isSelected()) {
+				p.setIva(4);
+			}
+			if (rdbtn21.isSelected()) {
+				p.setIva(21);
+			}
+			if (rdbtnExento.isSelected()) {
+				p.setIva(0);
+			}
+			
+			p.setNacionalidad(String.valueOf(this.jcbNacionalidad.getSelectedItem()));
+			p.setFechaAlta(deStringADate(this.jtfFechaAlta.getText()));
+			
+			
+			ControladorProveedores.update(p);
+			JOptionPane.showMessageDialog(null, "Registro modificado con éxito");
+		}
+		
+		
+		
+		
+		
+	}
+	
+	
 
 }

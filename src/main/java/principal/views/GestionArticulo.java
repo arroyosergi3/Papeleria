@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 
 public class GestionArticulo extends JPanel {
 
@@ -317,7 +318,10 @@ public class GestionArticulo extends JPanel {
 	}
 	
 	private void gestionProveedor() {
-		GestionProveedor gp = new GestionProveedor();
+		Proveedor p = (Proveedor) this.jcbProveedor.getSelectedItem();
+		GestionProveedor gp = new GestionProveedor(p);
+		gp.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		gp.setVisible(true);
 	}
 	
 	
