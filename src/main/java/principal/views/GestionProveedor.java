@@ -44,7 +44,7 @@ public class GestionProveedor extends JDialog {
 	JRadioButton rdbtn10;
 	JRadioButton rdbtn4;
 	JRadioButton rdbtn21;
-	private JComboBox jcbNacionalidad;
+	private JComboBox <String>jcbNacionalidad;
 
 	/**
 	 * Launch the application.
@@ -144,7 +144,7 @@ public class GestionProveedor extends JDialog {
 			contentPanel.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		}
 		{
-			jcbNacionalidad = new JComboBox();
+			jcbNacionalidad = new JComboBox<String>();
 			GridBagConstraints gbc_jcbNacionalidad = new GridBagConstraints();
 			gbc_jcbNacionalidad.insets = new Insets(0, 0, 5, 5);
 			gbc_jcbNacionalidad.fill = GridBagConstraints.HORIZONTAL;
@@ -255,6 +255,18 @@ public class GestionProveedor extends JDialog {
 	    return sdf.format(fecha);
 	}
 	
+	public void seleccionarNacionalidad(Proveedor pro) {
+		
+	    for (int i = 0; i < 2; i++) {
+	        String nacionalidadItem = (String) this.jcbNacionalidad.getItemAt(i);
+	        if (pro.getNacionalidad().equals(nacionalidadItem)) {
+	            this.jcbNacionalidad.setSelectedIndex(i);
+	            break; // Salir del bucle una vez que se haya seleccionado la nacionalidad
+	        }
+	    }
+	}
+
+	
 
 	private void cargarDatos(Proveedor p) {
 		this.jtfId.setText(String.valueOf(p.getId()));
@@ -280,12 +292,7 @@ public class GestionProveedor extends JDialog {
 			this.rdbtn21.setSelected(true);
 		}
 		
-		for (int i = 0; i < this.jcbNacionalidad.getItemCount(); i++) {
-			if (p.getNacionalidad() == String.valueOf(this.jcbNacionalidad.getItemAt(i)))  {
-				this.jcbNacionalidad.setSelectedIndex(i);
-				
-			}
-		}
+		seleccionarNacionalidad(p);
 	
 		
 	}
@@ -301,6 +308,8 @@ public class GestionProveedor extends JDialog {
 	        return false; // Si hay una excepción al parsear, significa que no tiene el formato correcto
 	    }
 	}
+	
+	
 	
 	public static Date deStringADate(String texto) {
 	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
