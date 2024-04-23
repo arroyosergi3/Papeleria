@@ -327,14 +327,16 @@ public class GestionArticulo extends JPanel {
 	
 	
 	
-	public  boolean esPrecioFloat() {
-	    try {
-	        Float.parseFloat(this.jtfPrecio.getText());
-	        return true;
-	    } catch (NumberFormatException e) {
-	        return false;
-	    }
+	public boolean esPrecioFloat() {
+		try {
+			Float.parseFloat(this.jtfUnidades.getText());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+
 	}
+
 
 	public boolean esStockValido() {
 	
@@ -404,10 +406,13 @@ public class GestionArticulo extends JPanel {
 					}
 					
 				}
-				JOptionPane.showMessageDialog(null, "Error al guardar, el precio no es valido");
+				else {
+					JOptionPane.showMessageDialog(null, "Error al guardar, el precio no es valido");
+				}
+				
 			}
 			else {
-				
+				JOptionPane.showMessageDialog(null, "Error al guardar, el codigo no es valido");
 			}
 			
 			
