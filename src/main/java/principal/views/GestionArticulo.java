@@ -21,7 +21,10 @@ import javax.swing.JButton;
 import javax.swing.JColorChooser;
 
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -462,7 +465,17 @@ public class GestionArticulo extends JPanel {
 		this.jtfUnidades.setText("");
 
 	}
-	
+	public static Date deStringADate(String texto) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+		try {
+			Date fecha = sdf.parse(texto);
+			return fecha; // Si la cadena se puede parsear como fecha, entonces tiene el formato correcto
+		} catch (ParseException e) {
+			JOptionPane.showMessageDialog(null, "Error, la fecha no tiene un formato valido");
+			return null; // Si hay una excepción al parsear, significa que no tiene el formato correcto
+		}
+	}
 	
 	
 	
