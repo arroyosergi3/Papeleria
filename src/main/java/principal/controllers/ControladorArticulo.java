@@ -1,8 +1,12 @@
 package principal.controllers;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import principal.entities.Articulo;
 
@@ -25,6 +29,22 @@ public class ControladorArticulo {
 			return null;
 		}
 	}
+	
+	
+	public static void delete(int id) {
+	    // Utilizamos named parameters para evitar vulnerabilidades de inyección de SQL
+	    TypedQuery<Articulo> q = em.createQuery("SELECT a FROM Articulo a WHERE a.id = :id", Articulo.class);
+	    q.setParameter("id", id);
+	    
+	    List<Articulo> articulos = q.getResultList();
+	    
+	    em.getTransaction().begin();
+	    for (Articulo articulo : articulos) {
+	        em.remove(articulo);
+	    }
+	    em.getTransaction().commit();
+	}
+
 	
 	
 	

@@ -154,6 +154,11 @@ public class GestionArticulo extends JPanel {
 		add(btnGuardar, gbc_btnGuardar);
 
 		JButton btnEliminar = new JButton("");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				delete();
+			}
+		});
 		btnEliminar.setIcon(
 				new ImageIcon(GestionArticulo.class.getResource("/tutorialJava/capitulo9_AWT_SWING/res/eliminar.png")));
 		GridBagConstraints gbc_btnEliminar = new GridBagConstraints();
@@ -317,6 +322,13 @@ public class GestionArticulo extends JPanel {
 
 	}
 	
+	
+	private  void delete() {
+		ControladorArticulo.delete(Integer.valueOf(this.jtfId.getText()));
+		JOptionPane.showMessageDialog(null, "Articulo eliminado con éxito");
+		cargarAnterior();
+	}
+	
 	private void gestionProveedor() {
 		Proveedor p = (Proveedor) this.jcbProveedor.getSelectedItem();
 		GestionProveedor gp = new GestionProveedor(p);
@@ -368,7 +380,16 @@ public class GestionArticulo extends JPanel {
 						o.setPrecio(Float.valueOf(this.jtfPrecio.getText()));
 						o.setIdProveedor(p.getId());
 						ControladorArticulo.insert(o);
+						
 						JOptionPane.showMessageDialog(null, "Articulo creado con éxito");
+						Articulo a = ControladorArticulo.findArtById(o.getId());
+						this.jtfCodigo.setText(a.getCodigo());
+						this.jtfColor.setText(a.getColor());
+						this.jtfId.setText(String.valueOf(a.getId()));
+						this.jtfDescripcion.setText(a.getDescripcion());
+						this.jtfPrecio.setText(String.valueOf(a.getPrecio()));
+						this.jtfUnidades.setText(String.valueOf(a.getStock()));
+						selProveedor(a);
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "Error al guardar, el stock no es válido");
@@ -400,6 +421,8 @@ public class GestionArticulo extends JPanel {
 						o.setStock(Integer.valueOf(this.jtfUnidades.getText()));
 						o.setPrecio(Float.valueOf(this.jtfPrecio.getText()));
 						o.setIdProveedor(p.getId());
+						ControladorArticulo.update(o);
+						JOptionPane.showMessageDialog(null, "Registro guardado con éxito");
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "Error al guardar, el stock no es valido");
@@ -419,7 +442,7 @@ public class GestionArticulo extends JPanel {
 			
 			
 			
-			ControladorArticulo.update(o);
+			
 			
 			
 			
