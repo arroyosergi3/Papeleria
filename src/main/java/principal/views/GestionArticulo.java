@@ -308,7 +308,7 @@ public class GestionArticulo extends JPanel {
 		gbc_jcbProveedor.gridx = 1;
 		gbc_jcbProveedor.gridy = 8;
 		add(jcbProveedor, gbc_jcbProveedor);
-		
+
 		JButton btnGestionProveedor = new JButton("Gestión Proveedor");
 		btnGestionProveedor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -324,24 +324,20 @@ public class GestionArticulo extends JPanel {
 		cargarPProveedores();
 
 	}
-	
-	
-	private  void delete() {
+
+	private void delete() {
 		ControladorArticulo.delete(Integer.valueOf(this.jtfId.getText()));
 		JOptionPane.showMessageDialog(null, "Articulo eliminado con éxito");
 		cargarAnterior();
 	}
-	
+
 	private void gestionProveedor() {
 		Proveedor p = (Proveedor) this.jcbProveedor.getSelectedItem();
 		GestionProveedor gp = new GestionProveedor(p);
 		gp.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		gp.setVisible(true);
 	}
-	
-	
-	
-	
+
 	public boolean esPrecioFloat() {
 		try {
 			Float.parseFloat(this.jtfUnidades.getText());
@@ -352,23 +348,17 @@ public class GestionArticulo extends JPanel {
 
 	}
 
-
 	public boolean esStockValido() {
-	
+
 		try {
 			Integer.parseInt(this.jtfUnidades.getText());
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
-		
-		
-		
+
 	}
-	
-	
-	
-	
+
 	private void guardar() {
 		if (this.jtfId.getText().isEmpty()) {
 			if (isCodigoValido()) {
@@ -383,7 +373,7 @@ public class GestionArticulo extends JPanel {
 						o.setPrecio(Float.valueOf(this.jtfPrecio.getText()));
 						o.setIdProveedor(p.getId());
 						ControladorArticulo.insert(o);
-						
+
 						JOptionPane.showMessageDialog(null, "Articulo creado con éxito");
 						Articulo a = ControladorArticulo.findArtById(o.getId());
 						this.jtfCodigo.setText(a.getCodigo());
@@ -393,28 +383,22 @@ public class GestionArticulo extends JPanel {
 						this.jtfPrecio.setText(String.valueOf(a.getPrecio()));
 						this.jtfUnidades.setText(String.valueOf(a.getStock()));
 						selProveedor(a);
-					}
-					else {
+					} else {
 						JOptionPane.showMessageDialog(null, "Error al guardar, el stock no es válido");
 					}
-					
-				}
-				else {
+
+				} else {
 					JOptionPane.showMessageDialog(null, "Error al guardar, el precio no es válido");
 				}
-				
-			}
-			else {
+
+			} else {
 				JOptionPane.showMessageDialog(null, "Error al guardar, el codigo no es válido");
 			}
-			
-			
-			
-		}
-		else{
+
+		} else {
 			Articulo o = ControladorArticulo.findArtById(Integer.valueOf(this.jtfId.getText()));
 			if (isCodigoValido()) {
-				
+
 				if (esPrecioFloat()) {
 					if (esStockValido()) {
 						Proveedor p = (Proveedor) this.jcbProveedor.getSelectedItem();
@@ -426,36 +410,22 @@ public class GestionArticulo extends JPanel {
 						o.setIdProveedor(p.getId());
 						ControladorArticulo.update(o);
 						JOptionPane.showMessageDialog(null, "Registro guardado con éxito");
-					}
-					else {
+					} else {
 						JOptionPane.showMessageDialog(null, "Error al guardar, el stock no es valido");
 					}
-					
-				}
-				else {
+
+				} else {
 					JOptionPane.showMessageDialog(null, "Error al guardar, el precio no es valido");
 				}
-				
-			}
-			else {
+
+			} else {
 				JOptionPane.showMessageDialog(null, "Error al guardar, el codigo no es valido");
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 		}
-			
-		
-		
+
 	}
-	
-	
+
 	private void nuevo() {
 		this.jtfCodigo.setText("");
 		this.jtfColor.setText("");
@@ -465,6 +435,7 @@ public class GestionArticulo extends JPanel {
 		this.jtfUnidades.setText("");
 
 	}
+
 	public static Date deStringADate(String texto) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -476,10 +447,6 @@ public class GestionArticulo extends JPanel {
 			return null; // Si hay una excepción al parsear, significa que no tiene el formato correcto
 		}
 	}
-	
-	
-	
-	
 
 	private boolean isCodigoValido() {
 		String str = this.jtfCodigo.getText();
@@ -528,6 +495,13 @@ public class GestionArticulo extends JPanel {
 			this.jtfPrecio.setText(String.valueOf(o.getPrecio()));
 			this.jtfUnidades.setText(String.valueOf(o.getStock()));
 			selProveedor(o);
+			if (this.jtfColor.getText().length() == 7) {
+				this.setBackground(Color.decode(o.getColor()));
+			}
+			else {
+				this.setBackground(Color.WHITE);
+			}
+
 		}
 
 	}
@@ -542,6 +516,12 @@ public class GestionArticulo extends JPanel {
 			this.jtfPrecio.setText(String.valueOf(o.getPrecio()));
 			this.jtfUnidades.setText(String.valueOf(o.getStock()));
 			selProveedor(o);
+			if (this.jtfColor.getText().length() == 7) {
+				this.setBackground(Color.decode(o.getColor()));
+			}
+			else {
+				this.setBackground(Color.WHITE);
+			}
 		}
 
 	}
@@ -556,6 +536,12 @@ public class GestionArticulo extends JPanel {
 			this.jtfPrecio.setText(String.valueOf(o.getPrecio()));
 			this.jtfUnidades.setText(String.valueOf(o.getStock()));
 			selProveedor(o);
+			if (this.jtfColor.getText().length() == 7) {
+				this.setBackground(Color.decode(o.getColor()));
+			}
+			else {
+				this.setBackground(Color.WHITE);
+			}
 		}
 
 	}
@@ -571,6 +557,12 @@ public class GestionArticulo extends JPanel {
 			this.jtfPrecio.setText(String.valueOf(o.getPrecio()));
 			this.jtfUnidades.setText(String.valueOf(o.getStock()));
 			selProveedor(o);
+			if (this.jtfColor.getText().length() == 7) {
+				this.setBackground(Color.decode(o.getColor()));
+			}
+			else {
+				this.setBackground(Color.WHITE);
+			}
 		}
 
 	}

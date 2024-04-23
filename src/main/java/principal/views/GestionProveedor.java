@@ -295,7 +295,7 @@ public class GestionProveedor extends JDialog {
 
 	}
 
-	private boolean isFechaNacimientoValida() {
+	private boolean isFechaValida() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String strFechaCad = this.jtfFechaAlta.getText();
 
@@ -348,7 +348,7 @@ public class GestionProveedor extends JDialog {
 
 		Proveedor p = ControladorProveedores.findArtById(Integer.parseInt(this.jtfId.getText()));
 
-		if (isFechaNacimientoValida()) {
+		if (isFechaValida()) {
 			if (this.chkbxActivo.isSelected()) {
 				p.setActivo(true);
 			} else {
