@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -237,6 +238,12 @@ public class GestionProveedor extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						GestionArticulo ga = new GestionArticulo();
+						abrirNuevoDialogo(ga);
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -252,6 +259,24 @@ public class GestionProveedor extends JDialog {
 		cargarDatos(p);
 	}
 
+	public void abrirNuevoDialogo(JPanel panel) {
+		JDialog dialogo = new JDialog();
+		// El usuario no puede redimensionar el di�logo
+		dialogo.setResizable(true);
+		// t�tulo del d�alogo
+		dialogo.setTitle("Gestión de empresas");
+		// Introducimos el panel creado sobre el di�logo
+		dialogo.setContentPane(panel);
+		// Empaquetar el di�logo hace que todos los componentes ocupen el espacio que deben y el lugar adecuado
+		dialogo.pack();
+		// El usuario no puede hacer clic sobre la ventana padre, si el Di�logo es modal
+		dialogo.setModal(true);
+		// Centro el di�logo en pantalla
+		dialogo.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width)/2 - dialogo.getWidth()/2, 
+				(Toolkit.getDefaultToolkit().getScreenSize().height)/2 - dialogo.getHeight()/2);
+		// Muestro el di�logo en pantalla
+		dialogo.setVisible(true);
+	}
 	public static String dateToString(Date fecha) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		return sdf.format(fecha);
@@ -299,6 +324,9 @@ public class GestionProveedor extends JDialog {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String strFechaCad = this.jtfFechaAlta.getText();
 
+		if (!strFechaCad.matches("[0-9]{2}[/][0-9]{2}[/][0-9]{4}"))
+			return false;
+		
 		if (strFechaCad.trim().equals("")) {
 			return false;
 		}
@@ -373,6 +401,10 @@ public class GestionProveedor extends JDialog {
 
 			ControladorProveedores.update(p);
 			JOptionPane.showMessageDialog(null, "Registro modificado con éxito");
+		}
+		else {
+			JOptionPane
+		.showMessageDialog(null, "No se ha podido guardar, la fecha no es válida");
 		}
 
 	}
